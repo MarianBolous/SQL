@@ -1,0 +1,328 @@
+ Finding the Employee with the Most Fulfilled Orders
+SELECT E.EmployeeID AS [Employee ID], E.LastName AS [Last Name], E.FirstName AS [First Name], 
+COUNT(O.OrderID) AS [Fulfilled Orders] 
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+GROUP BY E.EmployeeID, E.LastName, E.FirstName
+ORDER BY COUNT(O.OrderID) ASC;
+Next, we find out the particular to find employees who haven't fulfilled any orders. Olive explained that we should use HAVING instead of WHERE when working with aggregate functions.
+2. Finding Employees with No Orders
+SELECT E.EmployeeID AS [Employee ID], E.LastName AS [Last Name], E.FirstName AS [First Name], 
+COUNT(O.OrderID) AS [Fulfilled Orders] 
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+GROUP BY E.EmployeeID, E.LastName, E.FirstName
+HAVING COUNT(O.OrderID) = 0;
+We then looked at renaming the EmployeeID column in our query:
+3. Renaming Employee ID and Finding Employees Without Orders
+SELECT E.EmployeeID, O.OrderID, E.LastName AS [Last Name], E.FirstName AS [First Name]
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+WHERE O.OrderID IS NULL;
+Finally, we checked how to return employees whose EmployeeID is set to NULL:
+4. Returning Employees with a NULL EmployeeID
+SELECT O.EmployeeID, O.OrderID, E.LastName AS [Last Name], E.FirstName AS [First Name]
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+WHERE O.EmployeeID IS NULL;
+Assignment:
+Determine if any products were never ordered by querying the OrderDetails and Products tables from w3schools environment.
+
+
+
+
+identify all the employees that fulfilled orders using the W3school server. the the query for selecting top 3 employees that fulfilled the highest orders used in our last SQL session was tweaked by removing the TOP 3 on the 'select' line and then used the query:
+SELECT E.EmployeeID AS [Employee ID], E.LastName AS [Last Name], E.FirstName AS [First Name], 
+COUNT(O.OrderID) AS [Fulfilled Orders] 
+FROM Employees AS E
+INNER JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+GROUP BY E.EmployeeID, E.LastName, E.FirstName
+ORDER BY COUNT(O.OrderID);
+The query above gave us all the employees that fulfilled orders. Though not in a certain order of arrangement. To arrange it from employees with the highest fulfilled orders to those with the lowest, we added 'DESC' in 'ORDER BY' line and have a new query as 
+SELECT E.EmployeeID AS [Employee ID], E.LastName AS [Last Name], E.FirstName AS [First Name], 
+COUNT(O.OrderID) AS [Fulfilled Orders] 
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+GROUP BY E.EmployeeID, E.LastName, E.FirstName
+ORDER BY COUNT(O.OrderID) DESC;
+This query gave all the employees performance in descending order.
+We noticed that the query only gave 9 employees out of 10 employees from the employees table. 
+Then Mrs Olive Iluyomade introduced us to different types of 'JOIN' and when to use them.
+The types of 'JOIN' are 
+INNER JOIN used when connecting tables with matching  records 
+LEFT JOIN: used when you want to display everything from the left table, even if there are no matching items in the right table.
+RIGHT JOIN: vice versa to LEFT JOIN
+FULL OUTER JOIN: Used when you want to retrieve all records from the two connecting tables, regardless of whether there are matching records.
+
+To include all the employees in our last query, we then used the 'LEFT JOIN'. Then used the query below.
+SELECT E.EmployeeID AS [Employee ID], E.LastName AS [Last Name], E.FirstName AS [First Name], 
+COUNT(O.OrderID) AS [Fulfilled Orders] 
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+GROUP BY E.EmployeeID, E.LastName, E.FirstName
+ORDER BY COUNT(O.OrderID) ASC;
+The query gave us all the employees including those that didn't fulfil any orders
+
+To find out employee(s) with zero orders from a table, we introduced "WHERE" to the query by replacing the "ORDER BY" with "WHERE" " " = 0 and the query gave us an error.
+we were refreshed on the use of aggregate functions by Mrs Olive Iluyomade and when to use them. We introduced "HAVING" to replace "WHERE" in our query 
+
+SELECT E.EmployeeID AS [Employee ID], E.LastName AS [Last Name], E.FirstName AS [First Name], 
+COUNT(O.OrderID) AS [Fulfilled Orders] 
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+GROUP BY E.EmployeeID, E.LastName, E.FirstName
+HAVING COUNT(O.OrderID) = 0;
+
+Our last query was further tweaked to get employees with null orders instead of 0 (this was done to check when to use "WHERE" and "HAVING") as 
+
+SELECT E.EmployeeID, O.OrderID, E.LastName AS [Last Name], E.FirstName AS [First Name]
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+WHERE O.OrderID IS NULL;
+
+The last query was tweaked again to change the EmployeeID to NULL as
+
+SELECT O.EmployeeID, O.OrderID, E.LastName AS [Last Name], E.FirstName AS [First Name]
+FROM Employees AS E
+LEFT JOIN Orders AS O 
+ON E.EmployeeID = O.EmployeeID 
+WHERE O.EmployeeID IS NULL;
+
+
+
+
+
+ check the products that were not purchased using the W3school server. Two codes were used. These were;
+1st
+SELECT O.ProductID AS [Product ID],  P.ProductName AS [Product Name], SUM(O.Quantity) AS [Total Quantity]
+FROM OrderDetails AS O
+LEFT JOIN Products AS P
+ON O.ProductID = P.ProductID
+GROUP BY O.ProductID, P.ProductName
+ORDER BY SUM(O.Quantity) ASC;
+2nd 
+SELECT P.ProductID, P.ProductName
+FROM Products AS P
+LEFT JOIN OrderDetails AS OD
+ON P.ProductID = OD.ProductID
+WHERE OD.ProductID IS NULL;
+
+The first query actually showed all the products and further showed that they were all purchased though in ascending order of magnitude which could also reveal products that were poorly ordered. While the second query actually answered the assignment question better is it displaying no record found. This means no products were ordered or sold. Meaning all the company products were ordered.
+Then Mrs Olive Iluyomade guided the team through the installation of Microsoft SQL server and SSMS studio.
+Every member of the team, successfully installed the server and the studio.
+We were then introduced to how to add data bases to the studio from a downloaded database files after copying the downloaded database to my backup file on the Microsoft SQL Server.
+Mrs Olive Iluyomade gave us a link to download a database. The databases were downloaded and added to our Microsoft SQL server.
+We did some practice by working through the contents of some of the tables on the databases we downloaded and added to the server.
+Then Mrs Olive Iluyomade introduced the team to the creation of tables and updating tables on the server. To start this, click on the new query on the server and then type --Creation of Tables 
+Then type the name of the table.
+Mrs Olive Iluyomade used Student Results as an example. To create the full table along with the columns using the student results as example 
+
+CREATE Table StudentResults (StudentID varChar(4), Firstname varChar(25), Lastname varChar(50), Course varChar(30), Score Int, Grade varChar(1));
+next click on the good mark on the server to check if you have successfully created the table and when you are successful, click on execute to run the query.
+To view the table we just created, we use the query below;
+
+SELECT * FROM StudentResults;
+
+This code gives the table with the columns but empty data. To add data to the table, we use another key word "INSIGHT"
+
+To add data to the SfudentResults table, we use the query below;
+
+INSERT INTO StudentResults VALUES ('1000', 'Adeyemi', 'Adenuga', 'SQL', 100, 'A'), ('1001', 'Esosa', 'Ihama', 'Statistics', 90, 'A'), ('1002', 'Peniel', 'Girma', 'Power BI', 80, 'B');
+Click on the good icon to check if you are successful and then execute if successful.
+To change any data on the table created, we use another key word "UPDATE"
+This follows as;
+UPDATE StudentResults
+SET (column name) = (new data in quote)
+WHERE (the column name)  = (old data);
+If there are two or more rows is with same data you are changing, you the unique identifier column in the line of where. For example 
+
+UPDATE StudentResults 
+SET Grade = 'A' WHERE StudentID = '1002';
+
+
+
+
+
+SQL Learning Session Report (8/2/2025): Today's session was amazing! The session began with an introduction to the Data Dictionary, which serves as a structured reference for databases such as tables, columns, data types, and constraints. Understanding this concept is essential for managing and organizing databases effectively, and we reviewed the assignment from the previous day. We worked on two SQL queries, one to check for ordered products and the other to identify products that were never purchased.
+1️⃣ SQL Query to Find Ordered Products
+SELECT O.ProductID AS [Product ID], P.ProductName AS [Product Name], SUM(O.Quantity) AS [Total Quantity]
+FROM OrderDetails AS O
+LEFT JOIN Products AS P
+ON O.ProductID = P.ProductID
+GROUP BY O.ProductID, P.ProductName
+ORDER BY SUM(O.Quantity) ASC;
+🔹 Explanation:
+This query retrieves all ordered products, displaying their Product ID, Name, and Total Quantity ordered.
+a. It uses a LEFT JOIN to combine the OrderDetails and Products tables.
+b. The SUM(O.Quantity) function adds up all quantities of each product.
+c. The ORDER BY clause sorts the results in ascending order, so products with the least quantity ordered appear first.
+2️⃣ SQL Query to Find Products That Were Never Purchased
+SELECT P.ProductID, P.ProductName
+FROM Products AS P
+LEFT JOIN OrderDetails AS OD
+ON P.ProductID = OD.ProductID
+WHERE OD.ProductID IS NULL;
+🔹 Explanation:
+This query lists products that have never been ordered.
+a. The LEFT JOIN ensures that every product from the Products table is included.
+b. The WHERE OD.ProductID IS NULL condition filters out products that have no matching records in OrderDetails, meaning they were never purchased.
+SQL Server Installation and Practical Exercises
+After completing the queries, Olive guided us through the step-by-step installation of SQL Server Management Studio (SSMS). We also learned how to create a table, insert records, and view stored data. Here’s the SQL code we used:
+USE January2025;
+CREATE TABLE StudentResults (
+    StudentID VARCHAR(4),
+    Firstname VARCHAR(25),
+    Lastname VARCHAR(50),
+    Course VARCHAR(30),
+    Score INT,
+    Grade VARCHAR(1));
+SELECT * FROM StudentResults;
+🔹 Explanation:
+CREATE TABLE StudentResults: Create a table to store student scores.
+Data Types:
+VARCHAR(n): Stores text values (e.g., names, course names).
+INT: Stores numerical scores.
+SELECT * FROM StudentResults;: Displays all records in the table.
+Inserting Data into the Table
+We added sample student records using the INSERT INTO statement:
+INSERT INTO StudentResults VALUES
+('1000', 'Adeyemi', 'Adenuga', 'SQL', 100, 'A'), 
+('1001', 'Esosa', 'Ihama', 'Statistics', 90, 'A'), 
+('1002', 'Peniel', 'Girma', 'Power BI', 80, 'B');
+🔹 Explanation:
+Each INSERT statement adds a new student's record with Student ID, First Name, Last Name, Course, Score, and Grade.
+Updating Records in a Database
+We also learned how to update existing records using the UPDATE and SET commands.
+UPDATE StudentResults
+SET Grade = 'A'
+WHERE StudentID = '1002';
+🔹 Explanation:
+This query changes the grade of the student with StudentID = '1002' from 'B' to 'A'.
+The WHERE clause ensures that only this specific student is updated.
+Working with Multiple Queries
+We also practiced running multiple queries together and were encouraged to study more on how to update multiple queries in SQL.
+
+
+
+
+
+SQL Joins
+I learned that joins in SQL are used to combine rows from two or more tables based on a related column. The four common types of joins are:
+
+✅ Inner Join
+Returns only the rows that have matching values in both tables.
+Use case: When retrieving data that exists in both tables.
+Example: A query that retrieves orders for customers who exist in both the Orders and Customers tables.
+
+✅ Left Join
+Returns all rows from the left table and the matching rows from the right table. If no match is found, NULL values are returned for columns from the right table.
+Use case: To retrieve all records from the left table, even if there are no matches in the right table.
+Example: A query that retrieves all customers, including those who haven’t placed any orders (NULL for such customers).
+
+✅ Right Join
+Returns all rows from the right table and the matching rows from the left table. If no match is found, NULL values are returned for columns from the left table.
+Use case: To retrieve all records from the right table, even if there are no matches in the left table.
+Example: A query that retrieves all employees, including those who haven’t processed any orders (NULL for such employees).
+
+✅ Full Outer Join
+Returns all rows from both tables, regardless of whether there is a match. If no match is found, NULL values are returned for the missing side.
+Use case: To retrieve all records from both tables, even if they don’t have a match.
+Example: A query that retrieves all customers and all orders, including:
+Customers without orders
+Orders without associated customers
+
+Dimension & Fact Tables in SQL
+
+I also learned about dimension and fact tables in SQL, which are essential in data warehousing and dimensional modeling.
+
+✅ Dimension Table
+Contains descriptive attributes that provide context to the data.
+
+Examples:
+Customer table (CustomerID, Name, Address, City, Country)
+Product table (ProductID, Name, Category, Price)
+Time table (Date, Month, Year, Quarter)
+
+Used to filter, group, or categorize data in queries.
+
+✅ Fact Table
+Stores measurable, quantitative data (metrics or facts).
+
+Includes foreign keys that link to dimension tables.
+
+Examples:
+Sales table (SalesID, CustomerID, ProductID, SaleAmount, SaleDate)
+
+Orders table (OrderID, EmployeeID, CustomerID, OrderTotal)
+
+Enables analysis like "total sales by country" by linking fact tables to dimension tables.
+
+This structure is a core concept in data warehousing, as it supports efficient querying and reporting.
+
+
+
+
+
+
+1️⃣ Creating a Database & Table
+I first created a database and then located it before creating a table within it.
+
+2️⃣ Adding Comments in SQL
+Comments help provide additional information in SQL scripts.
+There are two ways to add comments:
+Multi-line comments: /* text */
+Single-line comments: Using the comment icon in SQL Server.
+
+3️⃣ Viewing a Table
+To display the contents of a table, I must use:sql  SELECT * FROM TableName; 
+
+4️⃣ Inserting Data into a Table
+The INSERT statement is used to add data into a table.
+When storing text, VARCHAR should be used instead of TEXT for better performance.
+
+5️⃣ Updating Data in a Table
+To modify existing data, I must use the UPDATE statement.
+
+
+
+
+
+𝗨𝘀𝗶𝗻𝗴 𝗖𝗵𝗮𝘁𝗚𝗣𝗧 𝘁𝗼 𝗺𝗮𝘀𝘁𝗲𝗿 𝗘𝘅𝗰𝗲𝗹 can be highly effective if you take a structured approach. Here’s how you can do it: 
+
+𝟭. 𝗟𝗲𝗮𝗿𝗻 𝗘𝘅𝗰𝗲𝗹 𝗕𝗮𝘀𝗶𝗰𝘀
+- Ask for explanations of fundamental concepts: “What are cells, rows, and columns in Excel?”
+- Get step-by-step guides: “How do I create a table in Excel?” 
+- Request short exercises: “Give me a simple Excel exercise to practice formulas.” 
+
+𝟮. 𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 & 𝗙𝗼𝗿𝗺𝘂𝗹𝗮𝘀 
+- Learn about specific functions: “Explain the VLOOKUP function with examples.” 
+- Compare similar functions: “What’s the difference between INDEX-MATCH and VLOOKUP?”
+- Ask for troubleshooting help: “Why is my SUMIF formula not working?”
+
+𝟯. 𝗜𝗺𝗽𝗿𝗼𝘃𝗲 𝗗𝗮𝘁𝗮 𝗔𝗻𝗮𝗹𝘆𝘀𝗶𝘀 𝗦𝗸𝗶𝗹𝗹𝘀
+- Learn about PivotTables: “How do I create a PivotTable in Excel?”
+- Understand conditional formatting: “How can I highlight duplicate values in Excel?”
+- Work with data cleaning: “What is the best way to remove duplicates in Excel?”
+
+𝟰. 𝗔𝘂𝘁𝗼𝗺𝗮𝘁𝗲 𝗧𝗮𝘀𝗸𝘀 𝘄𝗶𝘁𝗵 𝗠𝗮𝗰𝗿𝗼𝘀 & 𝗩𝗕𝗔
+- Start with simple macros: “How do I record a macro in Excel?”
+- Learn basic VBA: “Write a VBA script to automatically format a report.”
+- Debug errors: “Why is my VBA script not running?” 
+
+𝟱. 𝗚𝗲𝘁 𝗛𝗮𝗻𝗱𝘀-𝗼𝗻 𝗣𝗿𝗮𝗰𝘁𝗶𝗰𝗲
+- Request real-world scenarios: “Give me an Excel challenge for data analysis.” 
+- Ask for datasets to practice: “Where can I find free datasets for Excel practice?” 
+- Learn through project-based learning: “Help me create an Excel dashboard step by step.”
+
+
+
+
