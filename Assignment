@@ -1,0 +1,85 @@
+SQL QUESTIONS/ASSIGNMENT 
+(Use the database in the W3Schools platform) 
+1. I would like to know our Top 10 products. 
+Criteria: Sales made.
+2. I would like to know our top 10 products. 
+Criteria: Quantity bought.
+3. The company would like to reward our loyal customers. Please give me a report on the following. 
+- Frequency of buying 
+- Top 5 customers, re: frequency of buying
+4. Which customer spent the most with us?
+
+
+
+SELECT TOP 10 P.ProductID AS [Product ID], P.ProductName AS [Product Name], SUM(P.Price * OD.Quantity) AS [Total Sales Generated ($)]
+FROM Products AS P
+INNER JOIN OrderDetails AS OD ON P.ProductID = OD.ProductID
+GROUP BY P.ProductID, P.ProductName
+ORDER BY SUM(P.Price * OD.Quantity) DESC;
+
+
+
+SELECT TOP 10 P.ProductID AS [Product ID], P.ProductName AS [Product Name], ROUND(SUM(P.Price * OD.Quantity), 0) AS [Total Sales Generated ($)]
+FROM Products AS P
+INNER JOIN OrderDetails AS OD ON P.ProductID = OD.ProductID
+GROUP BY P.ProductID, P.ProductName
+ORDER BY SUM(P.Price * OD.Quantity) DESC;
+
+
+
+SELECT TOP 10 P.ProductID AS [Product ID], P.ProductName AS [Product Name], SUM(OD.Quantity) AS [Quantity Purchased]
+FROM OrderDetails AS OD
+INNER JOIN Products AS P ON OD.ProductID = P.ProductID
+GROUP BY P.ProductID, P.ProductName
+ORDER BY SUM(OD.Quantity) DESC;
+
+
+
+
+SELECT TOP 5 C.CustomerID AS [Customer ID], C.CustomerName AS [Customer Name], COUNT(O.OrderID) AS [Most Frequent Customers]
+FROM Orders AS O
+INNER JOIN Customers AS C ON O.CustomerID = C.CustomerID
+GROUP BY C.CustomerID, C.CustomerName
+ORDER BY COUNT(O.OrderID) DESC;
+
+
+
+ 
+SELECT TOP 5 C.CustomerID AS [Customer ID], C.CustomerName AS [Customer Name], COUNT(O.OrderID) AS [Most Frequent Customers], SUM(OD.Quantity) AS [Quantity Purchased]
+FROM (Orders AS O
+INNER JOIN Customers AS C ON O.CustomerID = C.CustomerID)
+INNER JOIN OrderDetails AS OD ON O.OrderID = OD.OrderID
+GROUP BY C.CustomerID, C.CustomerName
+ORDER BY COUNT(O.OrderID) DESC;
+
+
+ 
+SELECT TOP 1 C.CustomerID AS [Customer ID], C.CustomerName AS [Customer Name], SUM(P.Price * OD.Quantity) AS [Amount Spent ($)]
+FROM (Customers AS C
+INNER JOIN Orders AS O ON C.CustomerID = O.CustomerID)
+INNER JOIN OrderDetails AS OD ON O.OrderID = O.OrderID
+INNER JOIN Products AS P ON OD.ProductID = P.ProductID
+GROUP BY C.CustomerID, C.CustomerName
+ORDER BY SUM(P.Price * OD.Quantity) DESC;
+
+
+
+ 
+SELECT TOP 1 C.CustomerID AS [Customer ID], C.CustomerName AS [Customer Name], ROUND(SUM(P.Price * OD.Quantity), 0) AS [Amount Spent ($)]
+FROM ((Customers AS C
+INNER JOIN Orders AS O ON C.CustomerID = O.CustomerID)
+INNER JOIN OrderDetails AS OD ON O.OrderID = OD.OrderID)
+INNER JOIN Products AS P ON OD.ProductID = P.ProductID
+GROUP BY C.CustomerID, C.CustomerName
+ORDER BY SUM(P.Price * OD.Quantity) DESC;
+
+
+ 
+SELECT TOP 1 C.CustomerID AS [Customer ID], C.CustomerName AS [Customer Name], ROUND(SUM(P.Price * OD.Quantity), 0) AS [Amount Spent ($)]
+FROM ((Customers AS [C]
+INNER JOIN Orders AS [O] ON C.CustomerID = O.CustomerID)
+INNER JOIN OrderDetails AS [OD] ON O.OrderID = OD.OrderID)
+INNER JOIN Products AS [P] ON OD.ProductID = P.ProductID
+GROUP BY C.CustomerID, C.CustomerName
+ORDER BY SUM(P.Price * OD.Quantity) DESC;
+ 
