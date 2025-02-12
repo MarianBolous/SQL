@@ -62,3 +62,89 @@ GROUP BY SOD.ProductID, PP.Name;
  
  
 SELECT*FROM vProductSold;
+
+
+
+
+
+Querying Ordered Products
+A query was executed to fetch all sold products with their respective names and order quantities:
+sql
+
+
+SELECT SOD.ProductID, PP.Name, SOD.OrderQty 
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+WHERE SOD.OrderQty IS NOT NULL;
+This retrieves all products that have been ordered, ensuring that only products with a non-null OrderQty are included.
+
+
+Summarizing Total Sales Quantity
+To sum up the total quantity of each sold product, a GROUP BY query was executed:
+sql
+
+
+SELECT SOD.ProductID, PP.Name, SUM(SOD.OrderQty) AS Quantity
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+GROUP BY SOD.ProductID, PP.Name
+ORDER BY SUM(SOD.OrderQty) DESC;
+This aggregates order quantities for each product and sorts them in descending order.
+
+
+Finding the Best-Selling Product
+To identify the top-selling product, TOP 1 was used:
+sql
+
+
+SELECT TOP 1 SOD.ProductID, PP.Name, SUM(SOD.OrderQty) AS Quantity
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+GROUP BY SOD.ProductID, PP.Name
+ORDER BY SUM(SOD.OrderQty) DESC;
+This returns only the product with the highest total sales quantity.
+
+Finding the Most Profitable Product
+A query was executed to determine the product generating the highest revenue by multiplying OrderQty and UnitPrice:
+sql
+
+SELECT TOP 1 SOD.ProductID, PP.Name, ROUND(SUM(SOD.OrderQty * SOD.UnitPrice), 0) AS [Total Sales]
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+GROUP BY SOD.ProductID, PP.Name
+ORDER BY SUM(SOD.OrderQty * SOD.UnitPrice) DESC;
+This query finds the most profitable product by summing sales revenue (OrderQty * UnitPrice) and rounding the value.
+
+Creating SQL Views for Reusability
+A view (vSoldProducts) was created to store ordered products for easy querying:
+sql
+
+CREATE VIEW vSoldProducts AS
+SELECT SOD.ProductID, PP.Name, SOD.OrderQty 
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+WHERE SOD.OrderQty IS NOT NULL;
+This allows users to retrieve ordered products using SELECT * FROM vSoldProducts; without rewriting the query.
+
+A second view (vProductSold) was created to store total sales quantities per product:
+sql
+
+CREATE VIEW vProductSold AS
+SELECT SOD.ProductID, PP.Name, SUM(SOD.OrderQty) AS Quantity
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+GROUP BY SOD.ProductID, PP.Name;
+
+This stores aggregated sales data, making it easier to analyze product sales using SELECT * FROM vProductSold;.
+Key Takeaways
+✔ Used INNER JOIN to merge SalesOrderDetail and Product tables.
+✔ Grouped data (GROUP BY) to analyze total product sales.
+✔ Used ORDER BY DESC to rank products based on sales quantity and revenue.
+✔ Created SQL Views (CREATE VIEW) to simplify querying sold products.
+✔ Used TOP 1 to identify the best-selling and most profitable products.
