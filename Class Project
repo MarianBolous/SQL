@@ -1,0 +1,64 @@
+SELECT SOD.ProductID, PP.Name, SOD.OrderQty 
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+WHERE SOD.OrderQty IS NOT NULL; 
+
+
+
+SELECT SOD.ProductID, PP.Name, SUM(SOD.OrderQty) AS Quantity
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+GROUP BY SOD.ProductID, PP.Name
+ORDER BY SUM(SOD.OrderQty) DESC;
+
+
+
+
+SELECT TOP 1 SOD.ProductID, PP.Name, SUM(SOD.OrderQty) AS Quantity
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+GROUP BY SOD.ProductID, PP.Name
+ORDER BY SUM(SOD.OrderQty) DESC;
+
+
+
+
+SELECT TOP 1 SOD.ProductID, PP.Name, ROUND(SUM(SOD.OrderQty * SOD.UnitPrice), 0) AS [Total Sales]
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+GROUP BY SOD.ProductID, PP.Name
+ORDER BY SUM(SOD.OrderQty * SOD.UnitPrice) DESC;
+
+
+
+
+
+CREATE VIEW vSoldProducts
+AS
+ 
+SELECT SOD.ProductID, PP.Name, SOD.OrderQty 
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+WHERE SOD.OrderQty IS NOT NULL
+ 
+SELECT*FROM vSoldProducts;
+
+
+
+
+CREATE VIEW vProductSold
+AS
+ 
+SELECT SOD.ProductID, PP.Name, SUM(SOD.OrderQty) AS Quantity
+FROM Sales.SalesOrderDetail AS SOD
+INNER JOIN Production.Product AS PP 
+ON SOD.ProductID = PP.ProductID
+GROUP BY SOD.ProductID, PP.Name;
+ 
+ 
+SELECT*FROM vProductSold;
